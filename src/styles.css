@@ -1,0 +1,44 @@
+/* Global styles: simple, responsive layout with status badge colors. */
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, sans-serif; background: #f3f4f6; color: #111827; }
+.topbar { display: flex; gap: 24px; align-items: center; padding: 12px 24px; background: #1e3a8a; color: #fff; flex-wrap: wrap; }
+.topbar nav { display: flex; gap: 16px; flex: 1; }
+.topbar a { color: #bfdbfe; text-decoration: none; }
+.container { max-width: 1000px; margin: 24px auto; padding: 0 16px; }
+.card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px #0002; }
+.login { max-width: 380px; margin: 60px auto; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
+th, td { text-align: left; padding: 6px; border-bottom: 1px solid #e5e7eb; }
+label { display: block; margin-bottom: 12px; font-weight: 600; }
+input, select, textarea { width: 100%; padding: 6px; border: 1px solid #d1d5db; border-radius: 4px; font: inherit; }
+td input, td select { min-width: 70px; }
+.btn { padding: 8px 14px; margin: 4px 6px 4px 0; border: 1px solid #d1d5db; background: #fff; border-radius: 6px; cursor: pointer; }
+.btn.block { display: block; width: 100%; margin: 8px 0; }
+.btn.small { padding: 2px 8px; margin-left: 8px; }
+.btn.primary { background: #2563eb; color: #fff; border-color: #2563eb; }
+.btn.danger { background: #dc2626; color: #fff; border-color: #dc2626; }
+.badge { padding: 2px 8px; border-radius: 999px; font-size: 12px; background: #e5e7eb; }
+.badge.APPROVED { background: #bbf7d0; }
+.badge.REJECTED { background: #fecaca; }
+.badge.PENDING_APPROVAL, .badge.PENDING { background: #fde68a; }
+.badge.PO_REQUESTED, .badge.EXPORTED { background: #bfdbfe; }
+.approvals { padding-left: 18px; }
+.approvals li { margin-bottom: 8px; }
+.admin-actions { display: inline-flex; gap: 6px; margin-left: 12px; align-items: center; flex-wrap: wrap; }
+.admin-actions select { width: auto; }
+.error { color: #b91c1c; }
+/* Item cards and field grid for the request form */
+.item-card { border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; margin-bottom: 12px; background: #fafafa; }
+.item-head { display: flex; gap: 12px; align-items: center; margin-bottom: 10px; }
+.item-head select { width: auto; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px 14px; }
+.field { font-weight: 600; margin: 0; }
+.field small { display: block; font-weight: 400; color: #6b7280; }
+input:disabled { background: #f3f4f6; color: #6b7280; }
+/* Admin console */
+.stats { display: flex; gap: 12px; flex-wrap: wrap; }
+.stat { flex: 1; min-width: 120px; background: #f3f4f6; border-radius: 8px; padding: 12px; text-align: center; }
+.stat strong { display: block; font-size: 24px; }
+.inline-form { display: flex; gap: 8px; flex-wrap: wrap; }
+.inline-form input { width: auto; flex: 1; min-width: 160px; }
