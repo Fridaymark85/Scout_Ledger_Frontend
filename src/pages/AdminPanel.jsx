@@ -55,13 +55,21 @@ export default function AdminPanel() {
         <h2>Users &amp; approvers</h2>
         <div className="table-wrap">
           <table>
-            <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Pending</th><th>Decided</th><th>Active</th><th>Role</th></tr></thead>
+            <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Pending</th><th>Decided</th><th>Active</th></tr></thead>
             <tbody>
               {users.map((u) => {
                 const s = stats(u.id);
                 return (
                   <tr key={u.id}>
-                    <td>{u.name}</td><td>{u.email}</td><td>{ROLE_NAME[u.role] ?? u.role}</td>
+                    <td>{u.name}</td><td>{u.email}</td>
+                    <td>
+                      {/* Admin can't change their own role; others get a dropdown that saves on change */}
+                      {u.id === user.id ? (ROLE_NAME[u.role] ?? u.role) : (
+                        <select value={u.role} onChange={(e) => update(u.id, { role: e.target.value })}>
+                          {Object.entries(ROLE_NAME).map(([code, label]) => <option key={code} value={code}>{label}</option>)}
+                        </select>
+                      )}
+                    </td>
                     <td>{u.role === "SENIOR_APPROVER" ? s.pending : "—"}</td>
                     <td>{u.role === "SENIOR_APPROVER" ? s.done : "—"}</td>
                     <td>
