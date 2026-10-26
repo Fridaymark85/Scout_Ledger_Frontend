@@ -42,8 +42,7 @@ export function AuthProvider({ children }) {
   const logout = () => {
     tokens.clear();
     sessionStorage.removeItem("user");
-    setUser(null);
-    window.location.assign("/login");
+    setUser(null); // Layout sees no user and routes to /login without a page reload (a reload 404s on static hosts)
   };
 
   return <AuthContext.Provider value={{ user, login, logout }}>{children}</AuthContext.Provider>;
