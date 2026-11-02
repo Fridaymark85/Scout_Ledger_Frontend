@@ -33,6 +33,7 @@ export const requisitions = {
     api.patch(`/api/approval-steps/${stepId}/`, { status, comments }),
   reassign: (stepId, approverId) =>
     api.post(`/api/approval-steps/${stepId}/reassign/`, { approver_id: approverId }),
+  delete: (id) => api.delete(`/api/requisitions/${id}/`),
   // Streams the SAP .xlsx (blob) and triggers a native browser download.
   async exportSheet(id, prNumber) {
     const res = await api.get(`/api/requisitions/${id}/export/`, { responseType: "blob" }).catch(async (e) => {

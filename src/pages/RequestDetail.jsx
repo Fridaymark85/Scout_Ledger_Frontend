@@ -1,6 +1,6 @@
 // Request detail: items, approval chain, approver actions, and purchasing-admin controls.
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { requisitions, people, errorMessage } from "../api/requisitions";
 import { useAuth } from "../context/AuthContext";
 import { itemValue, ROLES, STATUS } from "../constants";
@@ -9,6 +9,7 @@ import StatusBadge from "../components/StatusBadge";
 export default function RequestDetail() {
   const { id } = useParams();
   const { user } = useAuth();
+  const nav = useNavigate();
   const [req, setReq] = useState(null);
   const [approvers, setApprovers] = useState([]);
   const [comment, setComment] = useState("");
@@ -33,6 +34,12 @@ export default function RequestDetail() {
   // Run an API call, reload the request, and surface errors.
   const run = (p) =>
     p.then(load).then(() => { setComment(""); setError(""); }).catch((e) => setError(errorMessage(e)));
+
+  // Admin/developer: permanently delete the request in any status, after confirmation.
+  const remove = () => {
+    if (!window.confirm(`Delete ${req.prNumber}? This cannot be undone.`)) return;
+    requisitions.delete(id).then(() => nav("/")).catch((e) => setError(errorMessage(e)));
+  };
 
   return (
     <div className="card">
@@ -129,6 +136,11 @@ export default function RequestDetail() {
           ) : (
             <strong>PO requested — sheet already exported.</strong>
           )}
+        </div>
+      )}
+      {isAdmin && (
+        <div>
+          <button className="btn danger" onClick={remove}>Delete request</button>
         </div>
       )}
       {error && <p className="error">{error}</p>}
