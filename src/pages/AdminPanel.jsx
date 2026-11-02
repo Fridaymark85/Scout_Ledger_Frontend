@@ -8,7 +8,7 @@ import { ROLES, STATUS, STATUS_LABEL } from "../constants";
 // Backend role codes -> display labels.
 const ROLE_NAME = {
   REQUESTOR: "Requester", SENIOR_APPROVER: "Senior approver",
-  ADMIN: "Purchasing admin", PURCHASING_AGENT: "Purchasing agent",
+  ADMIN: "Purchasing admin", PURCHASING_AGENT: "Purchasing agent", DEVELOPER: "Developer",
 };
 
 export default function AdminPanel() {
@@ -64,16 +64,18 @@ export default function AdminPanel() {
                     <td>{u.name}</td><td>{u.email}</td>
                     <td>
                       {/* Admin can't change their own role; others get a dropdown that saves on change */}
-                      {u.id === user.id ? (ROLE_NAME[u.role] ?? u.role) : (
+                      {u.id === user.id || (u.role === "DEVELOPER" && !user.isDeveloper) ? (ROLE_NAME[u.role] ?? u.role) : (
                         <select value={u.role} onChange={(e) => update(u.id, { role: e.target.value })}>
-                          {Object.entries(ROLE_NAME).map(([code, label]) => <option key={code} value={code}>{label}</option>)}
+                                          {Object.entries(ROLE_NAME)
+                                            .filter(([code]) => code !== "DEVELOPER" || user.isDeveloper)
+                                            .map(([code, label]) => <option key={code} value={code}>{label}</option>)}
                         </select>
                       )}
                     </td>
                     <td>{u.role === "SENIOR_APPROVER" ? s.pending : "—"}</td>
                     <td>{u.role === "SENIOR_APPROVER" ? s.done : "—"}</td>
                     <td>
-                      {u.id !== user.id && (
+                      {u.id !== user.id && (u.role !== "DEVELOPER" || user.isDeveloper) && (
                         <button className="btn small" onClick={() => update(u.id, { is_active: !u.active })}>
                           {u.active ? "Disable" : "Enable"}
                         </button>

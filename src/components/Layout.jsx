@@ -10,7 +10,7 @@ export default function Layout() {
   return (
     <>
       <header className="topbar">
-        <strong>Scout Ledger</strong>
+        <strong className="brand">Scout Ledger</strong>
         <nav>
           <Link to="/">Requests</Link>
           {user.role === ROLES.REQUESTER && <Link to="/new">New request</Link>}
@@ -18,7 +18,7 @@ export default function Layout() {
           <Link to="/account">Account</Link>
         </nav>
         <span className="user">
-          {user.name} <small>({ROLE_LABEL[user.role]})</small>
+          {user.name} <small>{user.isDeveloper ? "Developer" : ROLE_LABEL[user.role]}</small>
           <button className="btn small" onClick={logout}>Logout</button>
         </span>
       </header>

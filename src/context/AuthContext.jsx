@@ -11,6 +11,7 @@ const ROLE_MAP = {
   SENIOR_APPROVER: ROLES.APPROVER,
   ADMIN: ROLES.ADMIN,
   PURCHASING_AGENT: ROLES.ADMIN,
+  DEVELOPER: ROLES.ADMIN, // developer is a superset of admin
 };
 
 const toUiUser = (u) => ({
@@ -18,6 +19,7 @@ const toUiUser = (u) => ({
   name: `${u.first_name} ${u.last_name}`.trim() || u.username,
   email: u.email,
   role: ROLE_MAP[u.role] ?? ROLES.REQUESTER,
+  isDeveloper: u.role === "DEVELOPER",
 });
 
 export function AuthProvider({ children }) {
