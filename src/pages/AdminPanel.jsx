@@ -7,9 +7,11 @@ import { ROLES, STATUS, STATUS_LABEL } from "../constants";
 
 // Backend role codes -> display labels.
 const ROLE_NAME = {
-  REQUESTOR: "Requester", SENIOR_APPROVER: "Senior approver",
-  ADMIN: "Purchasing admin", PURCHASING_AGENT: "Purchasing agent", DEVELOPER: "Developer",
+  REQUESTOR: "Requester", SENIOR_APPROVER: "Approver",
+  ADMIN: "Purchasing admin", DEVELOPER: "Developer",
 };
+// Roles that can be assigned from the dropdown; the single developer account is never assignable.
+const ASSIGNABLE = ["REQUESTOR", "SENIOR_APPROVER", "ADMIN"];
 
 export default function AdminPanel() {
   const { user } = useAuth();
@@ -69,11 +71,9 @@ export default function AdminPanel() {
                     <td>{u.name}</td><td>{u.email}</td>
                     <td>
                       {/* Admin can't change their own role; others get a dropdown that saves on change */}
-                      {u.id === user.id || (u.role === "DEVELOPER" && !user.isDeveloper) ? (ROLE_NAME[u.role] ?? u.role) : (
+                      {u.id === user.id || u.role === "DEVELOPER" ? (ROLE_NAME[u.role] ?? u.role) : (
                         <select value={u.role} onChange={(e) => update(u.id, { role: e.target.value })}>
-                                          {Object.entries(ROLE_NAME)
-                                            .filter(([code]) => code !== "DEVELOPER" || user.isDeveloper)
-                                            .map(([code, label]) => <option key={code} value={code}>{label}</option>)}
+                          {ASSIGNABLE.map((code) => <option key={code} value={code}>{ROLE_NAME[code]}</option>)}
                         </select>
                       )}
                     </td>
@@ -98,7 +98,7 @@ export default function AdminPanel() {
         </div>
 
         {error && <p className="error">{error}</p>}
-        <p><small>Change a user's role to "Senior approver" to add them to the approver pool; accounts are created in the Django admin.</small></p>
+        <p><small>Change a user's role to "Approver" to add them to the approver pool. New sign-ups stay disabled until you enable them here.</small></p>
       </div>
     </>
   );

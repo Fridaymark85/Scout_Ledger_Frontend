@@ -82,7 +82,7 @@ export async function register(data: RegisterData): Promise<RegisterResult> {
 }
 
 // Change own username/password (JWT attached by the interceptor).
-export interface CredentialsData { current_password: string; username?: string; password?: string }
+export interface CredentialsData { current_password: string; username?: string; email?: string; password?: string }
 
 export async function updateCredentials(data: CredentialsData): Promise<void> {
   await api.patch("/api/users/me/credentials/", data);

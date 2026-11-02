@@ -10,7 +10,6 @@ const ROLE_MAP = {
   REQUESTOR: ROLES.REQUESTER,
   SENIOR_APPROVER: ROLES.APPROVER,
   ADMIN: ROLES.ADMIN,
-  PURCHASING_AGENT: ROLES.ADMIN,
   DEVELOPER: ROLES.ADMIN, // developer is a superset of admin
 };
 
@@ -41,13 +40,20 @@ export function AuthProvider({ children }) {
     }
   };
 
+  // Keep the cached profile in sync after the user edits their own email.
+  const setEmail = (email) => {
+    const u = { ...user, email };
+    sessionStorage.setItem("user", JSON.stringify(u));
+    setUser(u);
+  };
+
   const logout = () => {
     tokens.clear();
     sessionStorage.removeItem("user");
     setUser(null); // Layout sees no user and routes to /login without a page reload (a reload 404s on static hosts)
   };
 
-  return <AuthContext.Provider value={{ user, login, logout }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, login, logout, setEmail }}>{children}</AuthContext.Provider>;
 }
 
 export const useAuth = () => useContext(AuthContext);

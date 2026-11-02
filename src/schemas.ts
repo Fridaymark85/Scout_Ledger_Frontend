@@ -45,8 +45,9 @@ const itemBase = {
 export const materialItemSchema = z.object({
   ...itemBase,
   item_type: z.literal("MATERIAL"),
-  // Normally assigned by the digitizer (read-only on the server); validated if supplied.
-  material_number: text("Material number", 18).optional(),
+  // S/X code: type prefix (S or X) plus an editable alphanumeric code; joined into material_number on submit.
+  sx_type: z.enum(["S", "X"], { error: "Select S or X" }),
+  sx_code: requiredText("S/X code", 17).regex(/^[A-Za-z0-9]+$/, "S/X code must be letters and digits only"),
   delivery_date: z.string().min(1, "Delivery date is required"),
   purchasing_group: requiredText("Purchasing group", 3),
   total_value: priceField("Total value"),

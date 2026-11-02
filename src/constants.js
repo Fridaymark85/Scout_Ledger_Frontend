@@ -2,20 +2,20 @@
 
 export const ROLES = {
   REQUESTER: "requester", // creates material/service requests
-  APPROVER: "approver", // senior member; approves/rejects
+  APPROVER: "approver", // approves/rejects requests
   ADMIN: "admin", // purchasing admin: full control, final export & SAP PO request
 };
 
 export const ROLE_LABEL = {
   requester: "Requester",
-  approver: "Senior approver",
+  approver: "Approver",
   admin: "Purchasing admin",
 };
 
 export const STATUS = {
   DRAFT: "DRAFT", // saved, not yet sent to approvers
-  PENDING: "PENDING", // waiting on senior approvers
-  APPROVED: "APPROVED", // all seniors approved
+  PENDING: "PENDING", // waiting on approvers
+  APPROVED: "APPROVED", // all approvers approved
   REJECTED: "REJECTED",
   PO_REQUESTED: "EXPORTED", // SAP sheet exported / PO requested
 };

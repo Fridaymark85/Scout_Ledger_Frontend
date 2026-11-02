@@ -52,12 +52,12 @@ export default function RequestDetail() {
           <div className="table-wrap">
             <table>
               <thead>
-                <tr><th>Short text</th><th>Qty</th><th>UOM</th><th>Delivery</th><th>Purch. grp</th><th>Total value</th>
+                <tr><th>S/X code</th><th>Short text</th><th>Qty</th><th>UOM</th><th>Delivery</th><th>Purch. grp</th><th>Total value</th>
                   <th>Plant</th><th>Stor. loc.</th><th>Requisitioner</th><th>Mat. group</th></tr>
               </thead>
               <tbody>
                 {materials.map((i, n) => (
-                  <tr key={n}><td>{i.shortText}</td><td>{i.quantity}</td><td>{i.unit}</td><td>{i.deliveryDate}</td>
+                  <tr key={n}><td>{i.materialNumber}</td><td>{i.shortText}</td><td>{i.quantity}</td><td>{i.unit}</td><td>{i.deliveryDate}</td>
                     <td>{i.purchasingGroup}</td><td>{i.totalValue}</td><td>{i.plant}</td><td>{i.storageLocation}</td>
                     <td>{i.requisitioner}</td><td>{i.materialGroup}</td></tr>
                 ))}
@@ -114,7 +114,7 @@ export default function RequestDetail() {
       )}
       {canSubmit && (
         <div>
-          {/* Chain = all active senior approvers in listed order */}
+          {/* Chain = all active approvers in listed order */}
           <button className="btn primary" disabled={approvers.length === 0}
             onClick={() => run(requisitions.submit(id, approvers.map((a) => a.id)))}>Submit for approval</button>
         </div>
@@ -138,7 +138,7 @@ export default function RequestDetail() {
           )}
         </div>
       )}
-      {isAdmin && (
+      {(isAdmin || (user.role === ROLES.REQUESTER && req.requesterId === user.id)) && (
         <div>
           <button className="btn danger" onClick={remove}>Delete request</button>
         </div>

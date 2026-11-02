@@ -5,7 +5,7 @@ import api from "../api";
 const unwrap = (data) => (Array.isArray(data) ? data : data.results ?? []);
 
 const mapItem = (i) => ({
-  id: i.id, type: i.item_type === "MATERIAL" ? "Material" : "Service", shortText: i.short_text,
+  id: i.id, type: i.item_type === "MATERIAL" ? "Material" : "Service", shortText: i.short_text, materialNumber: i.material_number,
   quantity: i.quantity, unit: i.unit_of_measure, deliveryDate: i.delivery_date,
   purchasingGroup: i.purchasing_group, totalValue: i.total_value, plant: i.plant,
   storageLocation: i.storage_location, requisitioner: i.requisitioner, materialGroup: i.material_group,

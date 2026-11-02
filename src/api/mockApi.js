@@ -5,7 +5,7 @@ import { ROLES, STATUS } from "../constants";
 
 const KEY = "scout-ledger-db-v2";
 
-// Seed users: one requester, three senior approvers, one purchasing admin.
+// Seed users: one requester, three approvers, one purchasing admin.
 const seed = {
   users: [
     { id: 1, name: "Riya Requester", email: "requester@demo.com", role: ROLES.REQUESTER, active: true },
@@ -55,7 +55,7 @@ export const api = {
     return find(load(), id);
   },
 
-  // POST /requests – one pending approval row per active senior approver.
+  // POST /requests – one pending approval row per active approver.
   async createRequest(user, { headerNote, items }) {
     const db = load();
     const approvals = db.users
@@ -115,7 +115,7 @@ export const api = {
     return req;
   },
 
-  // ADMIN: add a senior approver to the pool.
+  // ADMIN: add a approver to the pool.
   async addApprover(name, email) {
     const db = load();
     if (db.users.some((u) => u.email === email.toLowerCase())) throw new Error("Email already exists");

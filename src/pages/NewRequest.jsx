@@ -8,7 +8,7 @@ import { requisitionSchema } from "../schemas";
 import { CURRENCIES, DEFAULTS, MATERIAL_GROUPS, UNITS } from "../constants";
 
 const emptyMaterial = () => ({
-  item_type: "MATERIAL", short_text: "", quantity: "1", unit_of_measure: "EA", delivery_date: "",
+  item_type: "MATERIAL", sx_type: "S", sx_code: "", short_text: "", quantity: "1", unit_of_measure: "EA", delivery_date: "",
   purchasing_group: DEFAULTS.purchasingGroup, total_value: "", plant: DEFAULTS.plant,
   storage_location: DEFAULTS.storageLocation, requisitioner: "", material_group: "",
 });
@@ -58,7 +58,10 @@ export default function NewRequest() {
 
   const submit = async (values) => {
     // `values` is the validated, renumbered output of the Zod schema (decimals stay strings).
-    const payload = { header_note: values.header_note, items: values.items };
+    // Materials: join the S/X type and code into the single backend field.
+    const items = values.items.map(({ sx_type, sx_code, ...rest }) =>
+      rest.item_type === "MATERIAL" ? { ...rest, material_number: `${sx_type}${sx_code.toUpperCase()}` } : rest);
+    const payload = { header_note: values.header_note, items };
     try {
       const { data } = await api.post("/api/requisitions/", payload);
       nav(`/requests/${data.id}`);
@@ -69,7 +72,7 @@ export default function NewRequest() {
         if (d.header_note) setError("header_note", { message: [].concat(d.header_note)[0] });
         if (Array.isArray(d.items)) {
           d.items.forEach((row, i) => Object.entries(row ?? {}).forEach(([k, m]) =>
-            setError(`items.${i}.${k}`, { message: [].concat(m)[0] })));
+            setError(`items.${i}.${k === "material_number" ? "sx_code" : k}`, { message: [].concat(m)[0] })));
         }
         if (!d.header_note && !Array.isArray(d.items)) setError("root", { message: JSON.stringify(d) });
       } else {
@@ -116,8 +119,14 @@ export default function NewRequest() {
             <div className="grid">
               {type === "MATERIAL" ? (
                 <>
-                  <Field label="Material" hint="S/X code will be generated through digitizer">
-                    <input disabled value="Auto-generated" />
+                  <Field label="S/X code" hint="Choose S or X and enter the code (mandatory)" error={err(i, "sx_code") ?? err(i, "sx_type")}>
+                    <div className="sx-row">
+                      <select {...ctl(i, "sx_type")}>
+                        <option value="S">S</option>
+                        <option value="X">X</option>
+                      </select>
+                      <input maxLength={17} placeholder="e.g. 1000234" {...ctl(i, "sx_code")} />
+                    </div>
                   </Field>
                   <Field label="Short text" hint="Specify requirement in short" error={err(i, "short_text")}><input {...ctl(i, "short_text")} /></Field>
                   <Field label="Quantity requested" error={err(i, "quantity")}><input {...numProps} {...ctl(i, "quantity")} /></Field>
