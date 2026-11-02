@@ -37,6 +37,11 @@ export default function AdminPanel() {
   // PATCH a user (role / active flag), then reload.
   const update = (id, patch) =>
     people.update(id, patch).then(() => { setError(""); refresh(); }).catch((e) => setError(errorMessage(e)));
+  // Developer-only: permanently delete an account after confirmation.
+  const remove = (u) => {
+    if (!window.confirm(`Delete account "${u.name}"? This cannot be undone.`)) return;
+    people.remove(u.id).then(() => { setError(""); refresh(); }).catch((e) => setError(errorMessage(e)));
+  };
   return (
     <>
       <div className="card">
@@ -79,6 +84,9 @@ export default function AdminPanel() {
                         <button className="btn small" onClick={() => update(u.id, { is_active: !u.active })}>
                           {u.active ? "Disable" : "Enable"}
                         </button>
+                      )}
+                      {user.isDeveloper && u.id !== user.id && (
+                        <button className="btn small danger" onClick={() => remove(u)}>Delete</button>
                       )}
                       {u.active ? " Yes" : " No"}
                     </td>

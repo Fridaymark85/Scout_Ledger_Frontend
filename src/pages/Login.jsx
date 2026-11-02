@@ -29,7 +29,8 @@ export default function Login() {
 
   return (
     <form className="card login" onSubmit={submit}>
-      <h2>Scout Ledger</h2>
+      <h2 className="login-title">Scout Ledger</h2>
+      <p className="login-sub">Procure-to-Pay workspace. Sign in to continue.</p>
       <label className="field">
         <span>Username</span>
         <input required autoComplete="username" value={form.username} onChange={(e) => setForm({ ...form, username: e.target.value })} />

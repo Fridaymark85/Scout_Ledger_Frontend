@@ -57,6 +57,7 @@ export const people = {
   approvers: () => api.get("/api/users/approvers/").then((r) => r.data), // [{id, name}]
   list: () => api.get("/api/users/").then((r) => unwrap(r.data)),
   update: (id, patch) => api.patch(`/api/users/${id}/`, patch),
+  remove: (id) => api.delete(`/api/users/${id}/`),
 };
 
 // Best readable message from a DRF/axios error (blob errors are not parsed).
