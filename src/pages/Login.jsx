@@ -29,6 +29,7 @@ export default function Login() {
 
   return (
     <form className="card login" onSubmit={submit}>
+      <img className="login-logo" src="/logo.jpg" alt="Logo" />
       <h2 className="login-title">Scout Ledger</h2>
       <p className="login-sub">Procure-to-Pay workspace. Sign in to continue.</p>
       <label className="field">

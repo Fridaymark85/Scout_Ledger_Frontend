@@ -21,6 +21,7 @@ export default function Layout() {
           {user.name} <small>{user.isDeveloper ? "Developer" : ROLE_LABEL[user.role]}</small>
           <button className="btn small" onClick={logout}>Logout</button>
         </span>
+        <img className="topbar-logo" src="/logo.jpg" alt="Logo" />
       </header>
       <main className="container">
         <Outlet />
